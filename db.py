@@ -21,4 +21,9 @@ def delete_option(option_id):
     option_list.delete_one({"_id":ObjectId(option_id)})
 
 
-insert_option("hung bia","day la game hung bia")
+# a = "button6"
+# b = "This is button 6"
+
+
+# insert_option(a,b)
+
