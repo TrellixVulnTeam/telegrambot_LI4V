@@ -7,6 +7,7 @@ client = pymongo.MongoClient(uri)
 db = client.vukhanhduy
 question_list = db.questions
 product_list = db.products
+feedbacks = db.feedback_storage
 
 
 def insert_question(product:str,question: str, answer: str):
@@ -24,13 +25,19 @@ def get_all_questions():
 def delete_question(question_id):
     question_list.delete_one({"_id":ObjectId(question_id)})
 
-
+#############################################################################################
 
 def insert_product(product:str):
     product_list.insert_one({"product":product})
 
 def get_all_products():
     return list(product_list.find())
+
+#############################################################################################
+
+def insert_feedback(product:str,question: str):
+    feedbacks.insert_one({"product":product,"question":question})
+
 
 # a = "product 2"
 # b = "This is question 2"
