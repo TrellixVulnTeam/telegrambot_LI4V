@@ -18,6 +18,7 @@ def start_command(message):
     text = """
     hello i'm Ruby ml!
 hit /help to see the list
+hit /feedback to send your question
     """
     bot.send_message(message.chat.id, text)
 
