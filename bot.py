@@ -7,7 +7,7 @@ import traceback
 import db
 
 
-bot = telebot.TeleBot("899548678:AAHsHPkBAbrLb2OrCjYNC5mGh809CF1HSvM")
+bot = telebot.TeleBot("856375116:AAEko6yafx2HLIGnThlZAA4F-HTMted_qww")
 
 
 products = db.get_all_products()
@@ -17,12 +17,13 @@ questions = db.get_all_questions()
 def start_command(message):
     text = """
     hello i'm Ruby ml!
-hit /product to see the list
+hit /help to see the list
     """
     bot.send_message(message.chat.id, text)
 
 
-@bot.message_handler(commands=['product'])
+
+@bot.message_handler(commands=['help'])
 def product_command(message):
     keyboard = telebot.types.InlineKeyboardMarkup()
 
@@ -44,6 +45,24 @@ def question_command(message,questions):
                      reply_markup=keyboard)
 
 
+@bot.message_handler(commands=['feedback'])
+def feedback_command(message):
+    text = """
+    Type in form to send your question
+[ditmeha]_[Product]_[Your question]
+	"""
+    bot.send_message(message.chat.id, text)
+
+
+@bot.message_handler(regexp='ditmeha_')
+def fb_process(message):
+    message_split = message.text.split('_')
+    product = message_split[1]
+    content = message_split[2]
+    db.insert_feedback(product,content)
+    bot.send_message(message.chat.id, "Done")
+
+
 @bot.callback_query_handler(func=lambda call: True)
 def iq_callback(query):
     data = query.data
@@ -52,8 +71,6 @@ def iq_callback(query):
             question_command(query.message,db.get_question_by_product(product['product']))
     if data.startswith('-'):
         get_ex_callback(query)
-    if data.startswith('fb-'):
-        get_feedback_callback(query)
     if data == 'back2':
         product_command(query.message)
     
@@ -62,9 +79,6 @@ def get_ex_callback(query):
     bot.answer_callback_query(query.id)
     send_result(query.message, query.data[1:10],query.data[11:])
 
-def get_feedback_callback(query):
-    bot.answer_callback_query(query.id)
-    send_result_feedback(query.message, query.data[4:])
 
 
 def send_result(message, ex_code1, ex_code2):
@@ -74,9 +88,7 @@ def send_result(message, ex_code1, ex_code2):
     keyboard.row(telebot.types.InlineKeyboardButton('Back', callback_data='back2'))
     bot.send_message(message.chat.id,text,reply_markup=keyboard)
 
-def send_result_feedback(message, ex_code):
-    db.insert_feedback(ex_code,)
-    bot.send_message(message.chat.id,text,reply_markup=keyboard)
+
 
 
 @bot.message_handler(regexp='uby')
