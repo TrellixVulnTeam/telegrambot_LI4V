@@ -28,8 +28,8 @@ def start_command(message):
 
     for product in products:
         keyboard.row(telebot.types.InlineKeyboardButton('{}'.format(product['product']), callback_data='{}'.format(product['product'])))
-    keyboard.row(telebot.types.InlineKeyboardButton(
-        'Back', callback_data='back1'))
+    # keyboard.row(telebot.types.InlineKeyboardButton(
+    #     'Back', callback_data='back1'))
 
     bot.send_message(message.chat.id, 'choose 1 product:',
                      reply_markup=keyboard)
@@ -73,16 +73,12 @@ def send_result(message, ex_code1, ex_code2):
     bot.send_message(message.chat.id,text,reply_markup=keyboard)
 
 
-@bot.message_handler(regexp='{}'.format(i for i in ['cac','chim']))
+@bot.message_handler(regexp='uby')
 def handle_message(message):
 	bot.send_message(
-        message.chat.id, "Ha mat lon"
+        message.chat.id, "Chat with me @duypzo_bot"
     )
 
-
-@bot.message_handler(func=lambda message: True)
-def echo_all(message):
-    bot.reply_to(message, message.text)
 
 
 bot.polling(none_stop=True)
