@@ -5,7 +5,9 @@ import pytz
 import json
 import traceback
 import db
+from flask import Flask, request
 
+app = Flask(__name__)
 
 bot = telebot.TeleBot("856375116:AAEko6yafx2HLIGnThlZAA4F-HTMted_qww")
 
@@ -105,3 +107,8 @@ def handle_message(message):
 
 
 bot.polling(none_stop=True)
+
+if __name__ == '__main__':
+    bot.polling(none_stop=True)
+    bot.set_webhook()
+    app.run(host='0.0.0.0', port=5000, debug=True)
