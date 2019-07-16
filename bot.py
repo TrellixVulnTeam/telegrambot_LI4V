@@ -78,13 +78,16 @@ def iq_callback(query):
     
 def get_ex_callback(query):
     bot.answer_callback_query(query.id)
-    send_result(query.message, query.data[1:10],query.data[11:])
+    data = query.data
+    data_process = data.split('-')
+    send_result(query.message, data_process[1],data_process[2])
 
 
 
 def send_result(message, ex_code1, ex_code2):
     a = db.get_question_by_product_and_question(ex_code1,ex_code2)
     text = a['answer']
+    print(a)
     keyboard = telebot.types.InlineKeyboardMarkup()
     keyboard.row(telebot.types.InlineKeyboardButton('Back', callback_data='back2'))
     bot.send_message(message.chat.id,text,reply_markup=keyboard)
