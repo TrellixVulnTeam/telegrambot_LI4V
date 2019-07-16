@@ -39,7 +39,7 @@ def product_command(message):
 def question_command(message,questions):
     keyboard = telebot.types.InlineKeyboardMarkup()
     for question in questions:
-        keyboard.row(telebot.types.InlineKeyboardButton('{}'.format(question['question']), callback_data='-{}-{}'.format(question['product'],question['question'])))
+        keyboard.row(telebot.types.InlineKeyboardButton('{}'.format(question['question']), callback_data='**{}**{}'.format(question['product'],question['question'])))
     keyboard.row(telebot.types.InlineKeyboardButton(
         'Back', callback_data='back2'))
     bot.send_message(message.chat.id, 'choose 1 question:',
@@ -70,7 +70,7 @@ def iq_callback(query):
     for product in products:
         if data == product['product']:
             question_command(query.message,db.get_question_by_product(product['product']))
-    if data.startswith('-'):
+    if data.startswith('**'):
         get_ex_callback(query)
     if data == 'back2':
         product_command(query.message)
@@ -79,7 +79,7 @@ def iq_callback(query):
 def get_ex_callback(query):
     bot.answer_callback_query(query.id)
     data = query.data
-    data_process = data.split('-')
+    data_process = data.split('**')
     send_result(query.message, data_process[1],data_process[2])
 
 
