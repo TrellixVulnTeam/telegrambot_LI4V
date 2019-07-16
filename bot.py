@@ -87,7 +87,6 @@ def get_ex_callback(query):
 def send_result(message, ex_code1, ex_code2):
     a = db.get_question_by_product_and_question(ex_code1,ex_code2)
     text = a['answer']
-    print(a)
     keyboard = telebot.types.InlineKeyboardMarkup()
     keyboard.row(telebot.types.InlineKeyboardButton('Back', callback_data='back2'))
     bot.send_message(message.chat.id,text,reply_markup=keyboard)
